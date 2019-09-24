@@ -1,0 +1,29 @@
+---
+- name: installing http
+  hosts: webserver
+  tasks:
+  - name: installing http package
+    package:
+      name: httpd
+      state: latest
+
+  - name: directory content
+    copy:
+      content: "hello world! this is shreya pohekar"
+      dest: /var/www/html/index.html
+      mode: 0644
+      owner: apache
+      group: apache
+
+  - name: setting up the firewall
+    firewalld:
+      service: http
+      permanent: true
+      state: enabled
+      immediate: true
+
+  - name: reloading the service
+    service:
+      name: httpd
+      state: reloaded
+      enabled: true
