@@ -1,0 +1,23 @@
+---
+- name: installing http
+  hosts: webserver
+  tasks:
+  - name: installing http package
+    parted:
+      device: /dev/sdb
+      number: 1
+      state: present
+      part_end: '100MiB'
+      part_type: primary
+
+  - name:
+    filesystem:
+      fstype: ext4
+      dev: /dev/sdb1
+
+  - name: mounting the partition
+    mount:
+      path: /mnt
+      src: /dev/sdb1
+      fstype: ext4
+      state: mounted
